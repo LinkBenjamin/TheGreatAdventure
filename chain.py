@@ -8,45 +8,36 @@ from langchain.prompts import PromptTemplate # import PromptTemplate
 # from langchain.memory import ChatMessageHistory
 # from langchain.memory import ConversationBufferMemory
 import prompt
-import os
+import helper
 
 # history = ChatMessageHistory()
+helper.get_logo()
 
-
-llm = OpenAI(temperature=0.7, openai_api_key=os.environ['OPENAI_API_KEY'])
+llm = OpenAI(temperature=0.7, openai_api_key="")
 
 
 name = st.text_input(
     "Name  ",
 )
-if not os.path.isfile(f'{name}.history'):
-    age = st.text_input(
-            "Age: ",
-            )
-    interests = st.text_input(
-            "Interests: "
-            )
-    topic = st.text_input(
-            "Topic: "
-            )
-    extender = ''
-else:
-    age='same as before',
-    interests = 'same as before'
-    topic = 'same as before'
-    with open(f'{name}.history', 'r') as f:
-        extender = f.read()
+age = st.text_input(
+        "Age: ",
+        )
+interests = st.text_input(
+        "Interests: "
+        )
+topic = st.text_input(
+        "Topic: "
+        )
 
 
 
 if st.button("Tell me a story", type="primary"):
 
 
-    template = prompt.prompt1 + extender
+    template = prompt.prompt1
     prompt_template = PromptTemplate(input_variables=["name", "age", "interests", "topic"], template=template)
-    if not os.path.isfile(f'{name}.history'):
-        with open(f'{name}.history', 'a') as f:
-            f.write(prompt.prompt1.format(name=name, age=age, interests=interests, topic=topic))
+    with open(f'{name}.history', 'a') as f:
+        f.write(prompt.prompt1.format(name=name, age=age, interests=interests, topic=topic))
     question_chain = LLMChain(llm=llm, prompt=prompt_template)
 
     template = '''summarize the following in a way that can be used to prompt creation of an image::
