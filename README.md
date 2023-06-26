@@ -6,3 +6,5 @@ In Your Great Adventure, we're tapping into that truth to encourage kids to read
 
 ## Running the Adventure
 This app is built with [Streamlit 1.23.1](https://streamlit.io/).  You can run it using the command `streamlit run chain.py`.
+
+**Note**: You will need an environment variable `openai_api_key` that holds your key!
