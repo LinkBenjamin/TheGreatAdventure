@@ -9,11 +9,13 @@ from langchain.prompts import PromptTemplate # import PromptTemplate
 # from langchain.memory import ConversationBufferMemory
 import prompt
 import helper
+import gitignore.constants as constants
 
 # history = ChatMessageHistory()
-helper.get_logo()
+helper.add_logo()
+openai_api_key = constants.OPEN_API_KEY
 
-llm = OpenAI(temperature=0.7, openai_api_key="")
+llm = OpenAI(temperature=0.7, openai_api_key=openai_api_key)
 
 
 name = st.text_input(
