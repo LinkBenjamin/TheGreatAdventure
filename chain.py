@@ -12,7 +12,7 @@ import prompt
 # history = ChatMessageHistory()
 
 
-llm = OpenAI(temperature=0.7, openai_api_key="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")
+llm = OpenAI(temperature=0.7, openai_api_key="")
 
 
 name = st.text_input(
@@ -34,11 +34,21 @@ if st.button("Tell me a story", type="primary"):
 
 
     template = prompt.prompt1
-    #.format(name=name, age=age, interests=interests, topic=topic)
-    print(template)
     prompt_template = PromptTemplate(input_variables=["name", "age", "interests", "topic"], template=template)
+    with open(f'{name}.history', 'a') as f:
+        f.write(prompt.prompt1.format(name=name, age=age, interests=interests, topic=topic))
     question_chain = LLMChain(llm=llm, prompt=prompt_template)
 
+    template = '''summarize the following in a way that can be used to prompt creation of an image::
+        {statement}'''
+    prompt_template = PromptTemplate(input_variables=["statement"], template=template)
+    summary_chain = LLMChain(llm=llm, prompt=prompt_template)
+
+    rslt = question_chain.run({"name":name, "age":age, "interests": interests, "topic": topic})
+    with open(f'{name}.history', 'a') as f:
+        f.write(rslt)
+    summary = summary_chain.run({"statement": rslt})
+    st.write(rslt)
+    st.write(summary)
 
 
-    st.success(question_chain.run({"name":name, "age":age, "interests": interests, "topic": topic} ))
