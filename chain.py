@@ -14,6 +14,9 @@ import openai
 
 # history = ChatMessageHistory()
 helper.add_logo()
+
+st.header("Your Great Adventure!")
+
 openai_api_key = constants.OPEN_API_KEY
 
 llm = OpenAI(temperature=0.7, openai_api_key=openai_api_key)
