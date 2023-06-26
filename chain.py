@@ -9,7 +9,8 @@ from langchain.prompts import PromptTemplate # import PromptTemplate
 # from langchain.memory import ConversationBufferMemory
 import prompt
 import helper
-import gitignore.constants as constants
+import constants as constants
+import openai
 
 # history = ChatMessageHistory()
 helper.add_logo()
@@ -52,6 +53,18 @@ if st.button("Tell me a story", type="primary"):
         f.write(rslt)
     summary = summary_chain.run({"statement": rslt})
     st.write(rslt)
-    st.write(summary)
+    ####### BEGIN IMAGE CODE #######
+    openai.api_key = openai_api_key
+    response = openai.Image.create(
+        prompt=summary,
+        n=1,
+        size="512x512",
+    )
+    
+    imageUrl = response["data"][0]["url"]
+
+
+    st.markdown(f"![Alt Text]({imageUrl})")
+    ####### END IMAGE CODE #######
 
 
